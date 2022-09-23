@@ -1,69 +1,4 @@
-﻿class Freind
-{
-    public static int Compare(List<Contender> contenders, int contenderAId, int contenderBId, int currentContenderId)
-    {
-        if (currentContenderId < contenderAId || currentContenderId < contenderBId)
-        {
-            //Console.WriteLine("Idk..");
-            return 1;
-        }
-
-        if (contenders[contenderAId].Goodness > contenders[contenderBId].Goodness)
-        {
-            //Console.WriteLine($"{contenders[contenderAId].ToString()} is better than {contenders[contenderBId].ToString()}");
-            return 0;
-        }
-        
-        //Console.WriteLine($"{contenders[contenderBId].ToString()} is better than {contenders[contenderAId].ToString()}");
-        return 2;
-    }
-}
-
-class Princess
-{
-    private const int AloneGoodness = 10;
-    private const double FirstContendersSkipCount = Program.ContendersCount * 0.37;
-    private const double ContenderToStopFactor = 2 * 0.93;
-    public static int ChooseContender(List<Contender> contenders)
-    {
-        for (int i = 0; i < Program.ContendersCount; i++)
-        {
-            //Console.WriteLine(contenders[i].ToString());
-            if (i > FirstContendersSkipCount)
-            {
-                int compareCount = 0;
-                for (int j = 0; j < i; j++)
-                {
-                    compareCount += Freind.Compare(contenders, j, i, i);
-                }
-
-                if (!(i * ContenderToStopFactor <= compareCount)) continue;
-                
-                Console.WriteLine("---");
-                Console.WriteLine($"{2 * i} >= {compareCount}");
-                Console.WriteLine($"{contenders[i].Goodness}");
-                return contenders[i].Goodness;
-            }
-        }
-        
-        Console.WriteLine("---");
-        Console.WriteLine($"{AloneGoodness}");
-        return AloneGoodness;
-    }
-}
-
-public struct Contender
-{
-    public string Name { get; set; }
-    public int Goodness { get; set; }
-
-    public override string ToString()
-    {
-        return $"{Name}, {Goodness}";
-    }
-}
-
-class Program
+﻿class Program
 {
     public const int ContendersCount = 100;
     private const int MaxGoodness = ContendersCount;
@@ -104,17 +39,7 @@ class Program
     
     public static void Main()
     {
-        //Init();
-        //Princess.ChooseContender(contenders);
-        
-        double epochCounter = 1000;
-        double averageHappiness = 0;
-        for (int i = 0; i < epochCounter; i++)
-        {
-            Init();
-            averageHappiness += Princess.ChooseContender(contenders) / epochCounter;
-        }
-
-        Console.WriteLine($"Average happiness is {averageHappiness}");
+        Init();
+        Princess.ChooseContender(contenders);
     }
 }
